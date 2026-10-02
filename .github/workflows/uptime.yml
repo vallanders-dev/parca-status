@@ -20,6 +20,10 @@ on:
         description: "Test the alert: pretend the server is down (opens the issue, emails the owner)"
         type: boolean
         default: false
+      keepalive:
+        description: "Test the monthly keepalive commit now"
+        type: boolean
+        default: false
 
 permissions:
   issues: write
@@ -80,7 +84,7 @@ jobs:
           fi
 
       - name: Monthly keepalive commit
-        if: github.event.schedule == '7 12 1 * *'
+        if: github.event.schedule == '7 12 1 * *' || inputs.keepalive
         run: |
           git clone -q --depth 1 "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO}.git" repo
           cd repo
